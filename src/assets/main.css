@@ -1,0 +1,47 @@
+/* @import './base.css'; */
+@import url('https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Noto+Sans+JP:wght@100..900&family=Outfit:wght@100..900&display=swap');
+
+#app {
+  max-width: 1440px;
+  margin: 0 auto;
+  width: 100%;
+
+  font-weight: normal;
+}
+
+html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+:root {
+  width: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: black;
+   /* font-family: 'Montserrat', sans-serif; */
+}
+
+
+body {
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-style: normal;
+}
+
+@media screen and (min-width: 1441px) {
+  body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+  }
+
+  #root {
+    max-width: 1440px;
+    margin: 0 auto;
+  }
+}
