@@ -74,7 +74,7 @@ const {
 // Redirect if not authorized (only on mount)
 onMounted(() => {
   if (!authStore.isAuthorized) {
-    router.push('/login');
+    router.push('/auth/login');
   }
 });
 

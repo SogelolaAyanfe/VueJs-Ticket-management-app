@@ -103,7 +103,7 @@ const handleSubmit = () => {
   background: #1f1f1f;
 }
 
-a {
+.form-header a {
   text-decoration: none;
   color: white;
 }

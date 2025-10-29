@@ -8,44 +8,78 @@
       <p>Log in to your account by filling in the information below.</p>
     </div>
 
+    <!-- Error Message -->
+    <div v-if="authStore.isError" class="error-message">
+      {{ authStore.isError }}
+    </div>
+
+    <!-- Success Message -->
+    <div v-if="authStore.isSuccess" class="success-message">
+      {{ authStore.isSuccess }}
+    </div>
+
     <form id="form-login" @submit.prevent="handleLogin">
       <div class="form-group">
         <label for="email">Email:</label>
-        <input type="email" id="email" name="email" v-model="email" required />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          v-model="email"
+          required
+        />
       </div>
       <div class="form-group">
         <label for="password">Password:</label>
-        <input type="password" id="password" name="password" v-model="password" required />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="password"
+          required
+        />
       </div>
-      <button type="submit">Login</button>
-     
-      <div v-if="authStore.isSuccess" class="success-message">
-        {{ authStore.isSuccess }}
-      </div>
-
-      <div v-if="authStore.isError" class="error-message">
-        {{ authStore.isError }}
-      </div>
+      <button type="submit" :disabled="isLoading">
+        {{ isLoading ? 'Logging in...' : 'Login' }}
+      </button>
     </form>
+
+    <div class="signup-link">
+      <p>Don't have an account? <router-link to="/auth/signup">Sign up</router-link></p>
+    </div>
   </div>
   <Footer />
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useAuthStore } from '@/stores/authStore'
-import Footer from '@/components/Footer.vue'
+import { ref } from 'vue';
+import { useRouter } from 'vue-router';
+import { useAuthStore } from '@/stores/authStore';
+import Footer from "@/components/Footer.vue";
 
-const email = ref('')
-const password = ref('')
-const authStore = useAuthStore()
+const email = ref('');
+const password = ref('');
+const isLoading = ref(false);
+const router = useRouter();
+const authStore = useAuthStore();
 
-const handleLogin = () => {
-  authStore.login({
+const handleLogin = async () => {
+  isLoading.value = true;
+
+  const result = await authStore.login({
     email: email.value,
-    password: password.value,
-  })
-}
+    password: password.value
+  });
+
+  if (result?.success) {
+    // Redirect to dashboard after successful login
+    setTimeout(() => {
+      router.push('/dashboard');
+    }, 2000);
+  }
+
+  isLoading.value = false;
+};
 </script>
 
 <style scoped>
@@ -120,6 +154,9 @@ const handleLogin = () => {
     opacity: 1;
     transform: translateY(0);
   }
+}
+a{
+  color: purple;
 }
 
 .header {

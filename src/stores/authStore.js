@@ -69,9 +69,6 @@ export const useAuthStore = defineStore('auth', () => {
 
           error.value = '';
           success.value = '';
-
-          // Redirect on successful LOGIN (not signup)
-          window.location.href = "/dashboard"; // Or use router if available
         } catch (err) {
           console.error('Login encryption error:', err);
           error.value = 'Login failed';
@@ -115,13 +112,10 @@ export const useAuthStore = defineStore('auth', () => {
       user.value = { email, password: hashedPassword };
       localStorage.setItem('user', JSON.stringify(user.value));
 
-      // SUCCESS: Show message but DON'T auto-login or redirect to dashboard
       success.value = "Account created successfully! You can now log in.";
 
       setTimeout(() => {
         success.value = '';
-        // Redirect to login page instead of dashboard
-        window.location.href = "/auth/login";
       }, 2000);
 
       return {
@@ -138,7 +132,7 @@ export const useAuthStore = defineStore('auth', () => {
   const logout = () => {
     session.value = {};
     localStorage.removeItem('session');
-    success.value = "Logged out successfully";
+    // Removed success message as requested
   };
 
   return {

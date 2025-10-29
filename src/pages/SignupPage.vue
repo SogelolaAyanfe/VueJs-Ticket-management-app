@@ -8,6 +8,15 @@
       <p>Create your account by filling in the information below.</p>
     </div>
 
+    <!-- Error Message -->
+    <div v-if="authStore.isError" class="error-message">
+      {{ authStore.isError }}
+    </div>
+
+    <!-- Success Message -->
+    <div v-if="authStore.isSuccess" class="success-message">
+      {{ authStore.isSuccess }}
+    </div>
 
     <form id="form-signup" @submit.prevent="handleSignUp">
       <div class="form-group">
@@ -33,25 +42,17 @@
       <button type="submit" :disabled="isLoading">
         {{ isLoading ? 'Signing Up...' : 'Sign Up' }}
       </button>
-      <div v-if="authStore.isError" class="error-message">
-      {{ authStore.isError }}
-    </div>
-
-    <!-- Success Message -->
-    <div v-if="authStore.isSuccess" class="success-message">
-      {{ authStore.isSuccess }}
-    </div>
     </form>
 
     <div class="login-link">
-      <p>Already have an account? <router-link to="/login">Log in</router-link></p>
+      <p>Already have an account? <router-link to="/auth/login">Log in</router-link></p>
     </div>
   </div>
   <Footer />
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuthStore } from '@/stores/authStore';
 import Footer from "@/components/Footer.vue";
@@ -62,15 +63,6 @@ const isLoading = ref(false);
 const router = useRouter();
 const authStore = useAuthStore();
 
-// Redirect if already authorized
-onMounted(() => {
-  if (authStore.isAuthorized) {
-    router.push('/dashboard');
-  }
-});
-
-
-
 const handleSignUp = async () => {
   isLoading.value = true;
 
@@ -80,8 +72,10 @@ const handleSignUp = async () => {
   });
 
   if (result?.success) {
-    // Form will be cleared by the redirect
-    console.log('Signup successful');
+    // Redirect to login page after successful signup
+    setTimeout(() => {
+      router.push('/auth/login');
+    }, 2000);
   }
 
   isLoading.value = false;
